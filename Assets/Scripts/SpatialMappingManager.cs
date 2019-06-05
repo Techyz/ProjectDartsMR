@@ -29,7 +29,6 @@ public class SpatialMappingManager : MonoBehaviour
         set
         {
             _observing = value;
-            Debug.Log(_observing);
             StopAllCoroutines();
             if (_observing)
             {

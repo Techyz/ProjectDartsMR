@@ -85,7 +85,6 @@ public class GestureManager : MonoBehaviour
 
             if (trackedGameObject == null)
             {
-                //trackedGameObject = Instantiate(GameManager.Instance.dartPrefab);
                 trackedGameObject = GameManager.Instance.Dart;
                 trackedGameObject.GetComponent<Rigidbody>().useGravity = false;
                 trackedGameObject.GetComponentInChildren<Collider>().enabled = false;
@@ -200,78 +199,3 @@ public class GestureManager : MonoBehaviour
         }
     }
 }
-
-// --------------------- TEST CODE --------------------------
-
-// Possible solution by using GestureManager's Hold events
-//recognizer.HoldStarted += (HoldStartedEventArgs) =>
-//{
-//    // Move the dart along the player hand movement
-//    if (FocusedObject != null)
-//    {
-//        Vector3 handPos;
-
-//        HoldStartedEventArgs.sourcePose.TryGetPosition(out handPos);
-
-//        focusedObjectPreviousPos = FocusedObject.transform.position;
-//        Debug.Log("Hold gesture captured. Starting hold!");
-//        FocusedObject.transform.position = handPos + Camera.main.transform.forward * 2.0f;
-//        //FocusedObject.SendMessage("OnManipulationStart");
-//    }
-//};
-
-//recognizer.HoldCompleted += (HoldCompletedEventArgs) =>
-//{
-//    Vector3 vel;
-
-//    if (HoldCompletedEventArgs.sourcePose.TryGetVelocity(out vel))
-//    {
-//        // Call dart "throw" function and pass the velocity as argument
-//    }
-//    Debug.Log("Hold completed!");
-//};
-
-//recognizer.HoldCanceled += (HoldCanceledEventArgs) =>
-//{
-//    // Return dart to hand
-//    Debug.Log("Hold canceled!");
-//};
-
-
-// Possible solution by using Unity's InteractionManager class
-//InteractionManager.InteractionSourceDetected += (args) =>
-//{
-//    if (args.state.source.kind == InteractionSourceKind.Hand)
-//    {
-//        Debug.Log("Hand detected!");
-//    }
-//};
-
-//InteractionManager.InteractionSourceLost += (args) =>
-//{
-//    if (args.state.source.kind == InteractionSourceKind.Hand)
-//    {
-//        Debug.Log("Hand lost!");
-//    }
-//};
-
-//InteractionManager.InteractionSourceUpdated += (args) =>
-//{
-//    if (args.state.source.kind == InteractionSourceKind.Hand)
-//    {
-//        if (args.state.anyPressed)
-//        {
-//            Debug.Log("Tap registered!");
-//            Vector3 handPosition;
-
-//            args.state.sourcePose.TryGetPosition(out handPosition);
-
-//            if (FocusedObject != null)
-//            {
-
-
-//                FocusedObject.transform.position = Vector3.Lerp(FocusedObject.transform.position, handPosition + Camera.main.transform.forward * 3.0f, fracJourney * 0.5f);
-//            }
-//        }
-//    }
-//};

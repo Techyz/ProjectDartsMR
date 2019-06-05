@@ -26,9 +26,6 @@ public class Placeable : MonoBehaviour
 
     private PlaceableSurfaces placeableSurfaces = PlaceableSurfaces.Vertical;
 
-    // Possible child object(s) to hide during placement
-    public List<GameObject> childrenToHide = null;
-
     // Visible assets meant to display the dimensions of the board and the surface attempting to place the board on
     private GameObject boundsAsset = null;
     private GameObject shadowAsset = null;
@@ -61,9 +58,6 @@ public class Placeable : MonoBehaviour
 
     void Start()
     {
-        childrenToHide = new List<GameObject>();
-        childrenToHide.Add(GameObject.FindGameObjectWithTag("Cursor"));
-
         targetPosition = gameObject.transform.position;
         gameObject.transform.LookAt(Camera.main.transform, Vector3.up);
 
@@ -122,22 +116,8 @@ public class Placeable : MonoBehaviour
                 gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPosition, placementVelocity / dist);
                 if (dist < 0.05f)
                 {
-                    //tapGestureRecognizer.StopCapturingGestures();
                     // Unhide the hidden child object(s)
-                    for (int i = 0; i < childrenToHide.Count; i++)
-                    {
-                        childrenToHide[i].SetActive(true);
-                    }
                     Placed = true;
-                }
-            }
-            // The board is in its place
-            else
-            {
-                // Unhide the hidden child object(s)
-                for (int i = 0; i < childrenToHide.Count; i++)
-                {
-                    childrenToHide[i].SetActive(true);
                 }
             }
         }
@@ -199,7 +179,6 @@ public class Placeable : MonoBehaviour
         position = centerHit.point;
         normal = centerHit.normal;
         
-
         // Cast a ray from all of the corners of the collider box against the surface
         for (int i = 1; i < facePoints.Length; i++)
         {
@@ -278,12 +257,6 @@ public class Placeable : MonoBehaviour
         if (managingBoxCollider)
         {
             boxCollider.enabled = true;
-        }
-
-        // Hide the child object(s) to make placement easier
-        for (int i = 0; i < childrenToHide.Count; i++)
-        {
-            childrenToHide[i].SetActive(false);
         }
 
         // Enter placement mode
@@ -447,7 +420,6 @@ public class Placeable : MonoBehaviour
         {
             shadowAsset.SetActive(false);
         }
-
     }
 
     bool IsSimilarEnoughDistance(float d1, float d2)

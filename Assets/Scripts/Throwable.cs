@@ -40,7 +40,6 @@ public class Throwable : MonoBehaviour
         // Orient dart to face its velocity
         if (isFlying)
             rb.rotation = Quaternion.LookRotation(rb.velocity);
-            //transform.forward = Vector3.Slerp(transform.forward, rb.velocity.normalized, Time.deltaTime);
     }
 
     private void RegisterManipulationRecognizer()

@@ -6,10 +6,20 @@ public class WorldCursor : MonoBehaviour
 {
     private float distanceFromCollision = 0.01f;
 
+    private bool _hidden;
+    public bool IsHidden
+    {
+        get { return _hidden; }
+
+        set
+        {
+            _hidden = value;
+            gameObject.SetActive(!_hidden);
+        }
+    }
+
     private Quaternion cursorDefaultRotation;
-
     private MeshRenderer meshRenderer;
-
     private LayerMask interactiveLayers = (1 << 30) | (1 << 5);
 
     private Color interactiveColor;

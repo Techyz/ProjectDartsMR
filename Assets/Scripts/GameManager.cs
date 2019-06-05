@@ -17,9 +17,11 @@ public class GameManager : MonoBehaviour
 
     public GameObject _boardPrefab;
     public GameObject _dartPrefab;
+    public GameObject _cursorPrefab;
 
     public GameObject Board { get; private set; }
     public GameObject Dart { get; private set; }
+    public GameObject Cursor { get; private set; }
 
     public int PlayerScore { get; set; } = 0;
 
@@ -107,6 +109,9 @@ public class GameManager : MonoBehaviour
         // and visualize the spatial mapping meshes
         GazeManager.Instance.RaycastLayerMask = LayerMask.GetMask("SpatialSurface", "Hologram", "UI");
 
+        // Spawn the cursor
+        Cursor = SpawnCursor();
+
         Debug.Log("Drawing spatial mapping started: Move around the room");
         SpatialMappingManager.Instance.IsObserving = true;
         SpatialMappingManager.Instance.SurfacesVisible = true;
@@ -120,6 +125,7 @@ public class GameManager : MonoBehaviour
     {
         // Stop the SurfaceObserver
         // Spawn the board and place it on a surface by following player's gaze 
+        Cursor.gameObject.GetComponent<WorldCursor>().IsHidden = true;
 
         GazeManager.Instance.RaycastLayerMask = LayerMask.GetMask("SpatialSurface", "UI");
 
@@ -183,5 +189,16 @@ public class GameManager : MonoBehaviour
             throwable = Dart.AddComponent<Throwable>();
 
         return Dart;
+    }
+
+    private GameObject SpawnCursor()
+    {
+        GameObject Cursor = Instantiate(_cursorPrefab, Camera.main.transform.position + (Camera.main.transform.forward * GazeManager.Instance.MaxGazeDistance), Quaternion.identity);
+        var worldCursor = Cursor.GetComponent<WorldCursor>();
+
+        if (worldCursor == null)
+            worldCursor = Cursor.AddComponent<WorldCursor>();
+
+        return Cursor;
     }
 }
