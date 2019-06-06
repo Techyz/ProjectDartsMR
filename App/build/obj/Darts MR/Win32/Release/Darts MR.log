@@ -1,0 +1,10 @@
+﻿  pch.cpp
+  App.cpp
+  Main.cpp
+  UnityGenerated.cpp
+c:\users\simo.ollinen\desktop\darts mr\app\darts mr\app.cpp(26): warning C4973: 'Windows::UI::ViewManagement::IApplicationView2::SuppressSystemOverlays::set': marked as deprecated
+  c:\users\simo.ollinen\desktop\darts mr\app\darts mr\app.cpp(26): note: Message: 'Use the TryEnterFullScreen method and IsFullScreenMode property instead of SuppressSystemOverlays. For more info, see MSDN.'
+  Generating code
+  All 160 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Darts MR.vcxproj -> C:\Users\simo.ollinen\Desktop\Darts MR\App\build\bin\Win32\Release\Darts MR.exe

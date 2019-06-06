@@ -20,8 +20,8 @@ public class WorldCursor : MonoBehaviour
 
     private Quaternion cursorDefaultRotation;
     private MeshRenderer meshRenderer;
-    private LayerMask interactiveLayers = (1 << 30) | (1 << 5);
 
+    private LayerMask interactiveLayers = (1 << 30) | (1 << 5);
     private Color interactiveColor;
     private Color defaultColor;
     private Color cursorTargetColor;
@@ -34,7 +34,7 @@ public class WorldCursor : MonoBehaviour
             return;
         }
 
-        if ((GazeManager.Instance.RaycastLayerMask & gameObject.layer) == 0)
+        if (GazeManager.Instance.RaycastLayerMask == (GazeManager.Instance.RaycastLayerMask | (1 << gameObject.layer)))
         {
             Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
                 LayerMask.LayerToName(gameObject.layer));
@@ -50,7 +50,6 @@ public class WorldCursor : MonoBehaviour
         
         // Cache the cursor default rotation so the cursor can be rotated with respect to the original orientation.
         cursorDefaultRotation = gameObject.transform.rotation;
-
         // Assign color values for cursor states
         interactiveColor = new Color(0.67f, 1.0f, 0.47f);
         defaultColor = new Color(1, 1, 1);
@@ -58,16 +57,11 @@ public class WorldCursor : MonoBehaviour
 
     void LateUpdate()
     {
-        if (GazeManager.Instance == null || meshRenderer == null)
-        {
-            return;
-        }
-
         // Place the cursor at the calculated position.
         gameObject.transform.position = GazeManager.Instance.Position + GazeManager.Instance.Normal * distanceFromCollision;
 
         // Reorient the cursor to match the hit object normal.
-        gameObject.transform.up = GazeManager.Instance.Normal;
+        gameObject.transform.forward = GazeManager.Instance.Normal;
         gameObject.transform.rotation *= cursorDefaultRotation;
 
         cursorTargetColor = defaultColor;

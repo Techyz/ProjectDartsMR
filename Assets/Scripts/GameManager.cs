@@ -23,9 +23,11 @@ public class GameManager : MonoBehaviour
     public GameObject Dart { get; private set; }
     public GameObject Cursor { get; private set; }
 
-    public int PlayerScore { get; set; } = 0;
+    public int PlayerScore { get; set; }
+    public bool GameOver { get; private set; } = false;
+    public bool ShowMainManu { get; private set; } = true;
 
-    private int _playerDarts = 8;
+    private int _playerDarts;
     public int PlayerDarts
     {
         get
@@ -37,15 +39,13 @@ public class GameManager : MonoBehaviour
             _playerDarts = value;
 
             if (_playerDarts == 0)
-                gameOver = true;
+                GameOver = true;
         }
     }
 
     private readonly float scanningTime = 15.0f;
 
-    private bool gameOver = false;
-
-    GameState _currentState = GameState.Scanning;
+    GameState _currentState;
 
     public GameState CurrentState
     {
@@ -67,7 +67,11 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        CurrentState = GameState.Scanning;
+        // Spawn the cursor
+        Cursor = SpawnCursor();
+
+        // Set the initial game state
+        CurrentState = GameState.MainMenu;
     }
 
     void OnStateChanged()
@@ -100,7 +104,10 @@ public class GameManager : MonoBehaviour
 
         // Show the main menu
         // Buttons to start game, options, leaderboards and quit the game
-        yield return null;
+        while (ShowMainManu)
+            yield return null;
+
+        CurrentState = GameState.Scanning;
     }
 
     IEnumerator ScanningStateRoutine()
@@ -108,9 +115,6 @@ public class GameManager : MonoBehaviour
         // Activate SpatialMappingManager to scan the surfaces with SurfaceObserver
         // and visualize the spatial mapping meshes
         GazeManager.Instance.RaycastLayerMask = LayerMask.GetMask("SpatialSurface", "Hologram", "UI");
-
-        // Spawn the cursor
-        Cursor = SpawnCursor();
 
         Debug.Log("Drawing spatial mapping started: Move around the room");
         SpatialMappingManager.Instance.IsObserving = true;
@@ -159,9 +163,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Hiding Spatial Mapping meshes: Enjoy playing!");
         SpatialMappingManager.Instance.SurfacesVisible = false;
         GazeManager.Instance.RaycastLayerMask = LayerMask.GetMask("SpatialSurface", "Hologram", "UI");
-        //GestureManager.Instance.RegisterInteractionManager();
 
-        while (!gameOver)
+        while (!GameOver)
         {
             if (Dart == null || Dart.GetComponent<Throwable>().HasLanded == true)
                 Dart = SpawnDart();
@@ -200,5 +203,13 @@ public class GameManager : MonoBehaviour
             worldCursor = Cursor.AddComponent<WorldCursor>();
 
         return Cursor;
+    }
+
+    public void NewGame()
+    {
+        Debug.Log("Starting a new game!");
+        PlayerScore = 0;
+        PlayerDarts = 8;
+        CurrentState = GameState.Scanning;
     }
 }

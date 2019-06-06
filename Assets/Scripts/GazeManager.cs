@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.XR.WSA;
 
 public class GazeManager : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public class GazeManager : MonoBehaviour
     private float lastHitDistance = 4.0f;
 
     // The layers raycast should target.
-    public LayerMask RaycastLayerMask = (1 << 31 | (1 << 30) | (1 << 5));
+    public LayerMask RaycastLayerMask = (1 << 31) | (1 << 30) | (1 << 5);
 
     // Physics.Raycast result is true if it hits a hologram.
     public bool Hit { get; private set; }
